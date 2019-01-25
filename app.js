@@ -2,21 +2,21 @@ var title = "";
 var records= 1;
 var beginning = "";
 var ending = "";
-var begindate="";
-var enddate="";
+var limitdate = "";
 var eightdigits = new RegExp(/^\d{8}$/);
 var fourdigits = new RegExp(/^\d{4}$/);
 
+function getCurrentDate (){
 var today = new Date();
 var dd = today.getDate();
 var mm = today.getMonth()+1; //January is 0!
 var yyyy = today.getFullYear();
 
-
-  if(mm<10){
-    mm=0+""+mm;
-  }
-  var limitdate = (yyyy+""+mm+""+dd);
+if(mm<10){
+  mm=0+""+mm;
+}
+return (yyyy+""+mm+""+dd);
+}
 
 function isvalidNumber(date){
   if (typeof date === "number" && eightdigits.test(date.toString())&& date <= parseInt(limitdate)){
@@ -25,46 +25,41 @@ function isvalidNumber(date){
 }
 
 function convertStart(date){
-  if (fourdigits.test(date.toString())){
+  if (fourdigits.test(date)){
     return parseInt(date+"0101");
   }
-  if (eightdigits.test(date.toString())){
-    return parseInt(date);
-  }
-  else return date;
+  else return parseInt(date);
 };
 
 function convertEnd(date){
-  if (fourdigits.test(date.toString())){
+  if (fourdigits.test(date)){
     return parseInt(date+"1231");
   }
-  if (eightdigits.test(date.toString())){
-    return parseInt(date);
-  }
-  else return date;
+  else return parseInt(date);
 };
 
 function addPost (){
 
   beginning = convertStart(beginning);
-  console.log(beginning);
   ending = convertEnd(ending);
 
+  limitdate = getCurrentDate();
+
   if(isvalidNumber(beginning)){
-    begindate ="&begin_date="+ beginning;
+    beginning ="&begin_date="+ beginning;
   }
   else{
-    begindate = "";
+    beginning = "";
   };
   if(isvalidNumber(ending)){
-    enddate = "&end_date="+ending;
+    ending = "&end_date="+ending;
   }
   else{
-    enddate = "";
+    ending = "";
   };
 
   var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q="+
-  title+begindate+enddate+
+  title+beginning+ending+
   "&api-key=1Vzz7MVAfAfsXkFzehZW1Db47kS84QNM";
 
   $.ajax({
@@ -94,8 +89,8 @@ $("#search").on("click",function(){
   event.preventDefault();
   title = $("#term").val().trim();
   records = $("#numRecords").val();
-  beginning=parseInt($("#yearStart").val());
-  ending=parseInt($("#yearEnd").val());
+  beginning=$("#yearStart").val();
+  ending=$("#yearEnd").val();
   addPost();
 });
 
