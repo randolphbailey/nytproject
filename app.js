@@ -28,17 +28,26 @@ function convertStart(date){
   if (fourdigits.test(date.toString())){
     return parseInt(date+"0101");
   }
+  if (eightdigits.test(date.toString())){
+    return parseInt(date);
+  }
+  else return date;
 };
 
 function convertEnd(date){
   if (fourdigits.test(date.toString())){
     return parseInt(date+"1231");
   }
+  if (eightdigits.test(date.toString())){
+    return parseInt(date);
+  }
+  else return date;
 };
 
 function addPost (){
 
   beginning = convertStart(beginning);
+  console.log(beginning);
   ending = convertEnd(ending);
 
   if(isvalidNumber(beginning)){
