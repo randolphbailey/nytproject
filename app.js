@@ -4,6 +4,8 @@ var beginning = "";
 var ending = "";
 var begindate="";
 var enddate="";
+var eightdigits = new RegExp(/^\d{8}$/);
+var fourdigits = new RegExp(/^\d{4}$/);
 
 var today = new Date();
 var dd = today.getDate();
@@ -17,19 +19,19 @@ var yyyy = today.getFullYear();
   var limitdate = (yyyy+""+mm+""+dd);
 
 function isvalidNumber(date){
-  if (typeof date === "number" && date >= 19900101 && date <= parseInt(limitdate)){
+  if (typeof date === "number" && eightdigits.test(date.toString())&& date <= parseInt(limitdate)){
     return true;
   }
 }
 
 function convertStart(date){
-  if (date<=9999 && date>=1000 ){
+  if (fourdigits.test(date.toString())){
     return parseInt(date+"0101");
   }
 };
 
 function convertEnd(date){
-  if (date<=9999 && date>=1000 ){
+  if (fourdigits.test(date.toString())){
     return parseInt(date+"1231");
   }
 };
